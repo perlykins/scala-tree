@@ -10,7 +10,11 @@ trait TreeSvc:
 object TreeService extends TreeSvc:
 
     override def build(source: String): Option[Node] = {
-        val data = read(source)
+        val data = try {
+            read(source)
+        } catch {
+            case _ => return None
+        }
             
         val root = Node("root", 0, ArrayBuffer())
 
@@ -21,7 +25,7 @@ object TreeService extends TreeSvc:
             val level = getLevel(line)
 
             val node = Node(line.last, level, ArrayBuffer[Node]())
-            stack.popWhile(n => n.level >= level)
+            stack.popWhile(_.level >= level)
             
             val top = stack.top
             top.children.append(node)
