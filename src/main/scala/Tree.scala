@@ -1,34 +1,33 @@
 import scala.collection.mutable.{ArrayBuffer, Stack}
 
+case class Node(label: String, level: Int, children: ArrayBuffer[Node])
+
 trait TreeSvc:
     def build(source: String): Option[Node]
     def find(label: String, tree: Node): Option[Node]
     def print(tree: Node): Unit
-
-case class Node(label: String, children: ArrayBuffer[Node])
 
 object TreeService extends TreeSvc:
 
     override def build(source: String): Option[Node] = {
         val data = read(source)
             
-        val root = Node("root", ArrayBuffer())
+        val root = Node("root", 0, ArrayBuffer())
 
-        val stack = Stack[(Int, Node)]()
-        stack.push((0, root))
+        val stack = Stack[Node]()
+        stack.push(root)
 
         for (line <- data.tail) {
-            val node = Node(line.last, ArrayBuffer[Node]())
-
             val level = getLevel(line)
 
-            stack.popWhile((l, _) => l >= level)
+            val node = Node(line.last, level, ArrayBuffer[Node]())
+            stack.popWhile(n => n.level >= level)
             
-            val (topLevel, top) = stack.top
+            val top = stack.top
             top.children.append(node)
-            stack.update(0, (topLevel, top))
+            stack.update(0, top)
 
-            stack.push((level, node))
+            stack.push(node)
         }
 
         Some(root)
@@ -66,10 +65,13 @@ object TreeService extends TreeSvc:
         val stack = Stack[Node]()
         stack.push(tree)
 
+        val baseLevel = tree.level
         while (!stack.isEmpty) {
             val node = stack.pop()
+            for (i <- 1 to (node.level - baseLevel))
+                printf("  ")
             println(node.label)
+
             stack.pushAll(node.children)
         }
-
     }
