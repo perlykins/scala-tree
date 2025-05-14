@@ -7,6 +7,6 @@
   
   subTree match 
     case Some(t) => TreeService.print(t)
-    case None => println("nothing to see here")
+    case None => println("here be monsters")
 
 }
