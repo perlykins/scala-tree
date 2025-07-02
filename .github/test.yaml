@@ -1,0 +1,36 @@
+name: Var test
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: What the new tenant should be called
+        type: string
+        required: true
+      env:
+        description: Environment to create tenant in
+        type: choice
+        options:
+          - dev
+          - prod
+        required: true
+      year:
+        description: Initial reporting year (will default to last year if left empty)
+        type: string
+        required: false
+
+permissions:
+      contents: read
+
+jobs:
+  do-it:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Does it work?
+        run: |
+          echo "testVar=${{ vars.TEST_VAR }}
+          
