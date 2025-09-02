@@ -1,0 +1,88 @@
+name: Customer success utils
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Environment to run against
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+        default: prod
+
+      list_tenants:
+        description: List all existing tenants
+        type: boolean
+        default: false
+
+      add_access:
+        description: Grant access to tenant
+        type: boolean
+        default: false
+
+      role:
+        description: Role to apply when adding access
+        type: choice
+        options:
+          - SU
+          - CL
+          - DP
+          - DV
+          - QC
+          - FM
+        required: false
+
+      email:
+        description: Email of person who's being granted tenant access
+        type: string
+        required: false
+
+      tenant:
+        description: Tenant to grant access to
+        type: string
+        required: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+#      - name: Build jar
+#        uses: ./github/workflows/install.yaml
+
+#      - name: List tenants
+#        if: ${{ inputs.list_tenants }}  # is this likely to work?
+#        run: |
+#          ./admin-cli.sh list tenants
+
+      - name: Add access
+        if: ${{ inputs.add_access }}
+        run: |
+          if [[ -z "${{ inputs.email }}" ]]; then
+            echo "Must provide email!"
+            exit 1
+          fi
+          
+          if [[ -z "${{ inputs.role }}" ]]; then
+            echo "Must provide role!"
+            exit 1
+          fi
+          
+          if [[ -z "${{ inputs.tenant }}" ]]; then
+            echo "Must provide tenant!"
+            exit 1
+          fi
+          
+#          ./admin-cli.sh addUser "${{ inputs.email }}" "${{ inputs.role }}" "${{ inputs.tenant }}"
