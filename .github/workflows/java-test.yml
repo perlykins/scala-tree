@@ -1,0 +1,14 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - run: |
+          java -v
+          sudo alternatives --list
+          
