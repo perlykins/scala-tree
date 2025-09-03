@@ -9,6 +9,6 @@ jobs:
         shell: bash
     steps:
       - run: |
-          java -v
+          java -version
           sudo alternatives --list
           
