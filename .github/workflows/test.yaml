@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Does it work?
         run: |
-          echo "testVar=${{ vars.TEST_VAR }}
+          echo "testVar=${{ vars.TEST_VAR }}"
           
       - name: Activate collect license
         if: ${{ inputs.collect_license == 'true' }}
