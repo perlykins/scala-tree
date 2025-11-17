@@ -39,6 +39,6 @@ jobs:
           echo "testVar=${{ vars.TEST_VAR }}"
           
       - name: Activate collect license
-        if: ${{ inputs.collect_license == 'true' }}
+        if: ${{ inputs.collect_license }}
         run: |
           echo "this is a collect license"
