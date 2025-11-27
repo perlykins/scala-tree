@@ -49,4 +49,5 @@ jobs:
         run: |
           echo "raw: -${{ inputs.name }}-"
           echo "mod: -$NAME-"
+          echo "v3: -${{ inputs.name }} | xargs-"
       
