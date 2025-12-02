@@ -51,4 +51,5 @@ jobs:
           echo "mod: -$NAME-"
           x="echo ${{ inputs.name }} | xargs"
           echo "v3: -$x-"
+          y=$(echo "${{ inputs.name }}"|xargs)
       
